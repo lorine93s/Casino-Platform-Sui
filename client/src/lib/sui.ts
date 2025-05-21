@@ -26,6 +26,7 @@ class SuiWalletProvider {
   private listeners: Map<string, Function[]> = new Map();
   
   constructor() {
+    console.log("SuiWalletProvider initialized");
     this.initListeners();
   }
   

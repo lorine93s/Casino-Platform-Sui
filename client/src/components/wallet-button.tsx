@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Wallet, LogOut, Plus } from "lucide-react";
-import { useWallet } from "@/contexts/wallet-context";
 import { formatBalance } from "@/lib/utils";
+import { walletService, CasinoWalletState } from "@/lib/wallet-service";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,31 +20,87 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { suiWallet } from "@/lib/sui";
+import { useToast } from "@/hooks/use-toast";
 
 interface WalletButtonProps {
   className?: string;
 }
 
 export function WalletButton({ className }: WalletButtonProps) {
-  const { isConnected, connect, disconnect, wallet, isConnecting } = useWallet();
+  const [wallet, setWallet] = useState<CasinoWalletState>(walletService.getState());
+  const [isConnecting, setIsConnecting] = useState(false);
   const [depositDialogOpen, setDepositDialogOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState("10");
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Subscribe to wallet state changes
+    const unsubscribe = walletService.subscribe((newState) => {
+      console.log("Wallet state updated:", newState);
+      setWallet(newState);
+    });
+    
+    return unsubscribe;
+  }, []);
+
+  const connect = async () => {
+    try {
+      setIsConnecting(true);
+      const result = await walletService.connect();
+      
+      toast({
+        title: "Wallet Connected",
+        description: `Connected with address ${result.address?.substring(0, 6)}...${result.address?.substring(result.address.length - 4)}`,
+      });
+    } catch (error) {
+      console.error("Failed to connect wallet:", error);
+      toast({
+        title: "Connection Failed",
+        description: "Failed to connect to wallet. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsConnecting(false);
+    }
+  };
+
+  const disconnect = async () => {
+    try {
+      await walletService.disconnect();
+      
+      toast({
+        title: "Wallet Disconnected",
+        description: "Your wallet has been disconnected.",
+      });
+    } catch (error) {
+      console.error("Failed to disconnect wallet:", error);
+    }
+  };
 
   const handleDeposit = async () => {
     const amount = parseFloat(depositAmount);
     if (isNaN(amount) || amount <= 0) return;
     
     try {
-      await suiWallet.addFunds(amount);
+      await walletService.addFunds(amount);
       setDepositDialogOpen(false);
       setDepositAmount("10");
+      
+      toast({
+        title: "Deposit Successful",
+        description: `Added ${amount} SUI to your wallet.`,
+      });
     } catch (error) {
       console.error("Failed to add funds:", error);
+      toast({
+        title: "Deposit Failed",
+        description: "Failed to add funds to your wallet.",
+        variant: "destructive",
+      });
     }
   };
 
-  if (!isConnected) {
+  if (!wallet.connected) {
     return (
       <Button 
         onClick={connect}
@@ -66,7 +122,7 @@ export function WalletButton({ className }: WalletButtonProps) {
             className={`bg-slate-800 border-slate-700 hover:bg-slate-700 ${className}`}
           >
             <Wallet className="mr-2 h-4 w-4" />
-            {formatBalance(wallet?.balance || 0)} SUI
+            {formatBalance(wallet.balance || 0)} SUI
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 bg-slate-800 border-slate-700 text-white">
