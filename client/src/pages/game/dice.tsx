@@ -8,6 +8,7 @@ import {
   CardTitle,
   CardDescription 
 } from "@/components/ui/card";
+import { CasinoStats } from "@/components/casino-stats";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
@@ -319,6 +320,9 @@ export default function DiceGame() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Casino Stats Card */}
+              <CasinoStats />
 
               {/* Wallet info/connect card */}
               <Card className="bg-slate-850 border-slate-700">

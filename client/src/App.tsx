@@ -11,6 +11,7 @@ import Games from "@/pages/games";
 import Leaderboard from "@/pages/leaderboard";
 import Profile from "@/pages/profile";
 import History from "@/pages/history";
+import AdminPage from "@/pages/admin";
 
 // Game pages
 import DiceGame from "@/pages/game/dice";
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/leaderboard" component={Leaderboard} />
       <Route path="/profile" component={Profile} />
       <Route path="/history" component={History} />
+      <Route path="/admin" component={AdminPage} />
       
       {/* Game routes */}
       <Route path="/game/dice" component={DiceGame} />
