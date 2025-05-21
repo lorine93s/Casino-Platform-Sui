@@ -30,11 +30,30 @@ class SuiWalletProvider {
   }
   
   private initListeners() {
+    // Initialize event listeners map
     Object.values(WALLET_EVENTS).forEach(event => {
       this.listeners.set(event, []);
     });
     
-    // Simulate window events from wallet extensions
+    // Check if we have a stored wallet in localStorage
+    const storedWallet = localStorage.getItem('suiWallet');
+    if (storedWallet) {
+      try {
+        this.wallet = JSON.parse(storedWallet);
+        // Only restore if it was connected
+        if (this.wallet && this.wallet.connected) {
+          // Emit connected event on next tick to allow listeners to register
+          setTimeout(() => {
+            this.emit(WALLET_EVENTS.CONNECTED, this.wallet);
+          }, 0);
+        }
+      } catch (e) {
+        console.error('Failed to parse stored wallet:', e);
+        localStorage.removeItem('suiWallet');
+      }
+    }
+    
+    // Simulate window events from wallet extensions (for real wallet integration)
     window.addEventListener('message', (event) => {
       if (event.data && event.data.type === 'suiWalletEvent') {
         this.emit(event.data.name, event.data.data);
@@ -82,11 +101,16 @@ class SuiWalletProvider {
         connected: true,
       };
       
+      // Save to localStorage for persistence
+      localStorage.setItem('suiWallet', JSON.stringify(this.wallet));
+      
       // Emit connection event
       this.emit(WALLET_EVENTS.CONNECTED, this.wallet);
       
+      console.log('Wallet connected successfully:', this.wallet);
       return this.wallet;
     } catch (error) {
+      console.error('Error connecting wallet:', error);
       this.emit(WALLET_EVENTS.ERROR, error);
       throw error;
     }
@@ -98,7 +122,13 @@ class SuiWalletProvider {
     }
     
     this.wallet.connected = false;
+    
+    // Remove from localStorage
+    localStorage.removeItem('suiWallet');
+    
+    // Emit disconnection event
     this.emit(WALLET_EVENTS.DISCONNECTED);
+    console.log('Wallet disconnected');
   }
   
   public isConnected(): boolean {

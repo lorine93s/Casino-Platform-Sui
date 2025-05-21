@@ -134,15 +134,40 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const connect = async () => {
     try {
       setIsConnecting(true);
-      await suiWallet.connect();
+      
+      // Directly connect to the wallet and set state without waiting for event
+      const connectedWallet = await suiWallet.connect();
+      setWallet(connectedWallet);
+      
+      try {
+        // Register the wallet with our backend
+        const response = await apiRequest("POST", "/api/wallet/connect", { 
+          walletAddress: connectedWallet.address 
+        });
+        
+        const data = await response.json();
+        setUser(data.user);
+        
+        toast({
+          title: "Wallet Connected",
+          description: `Connected to ${connectedWallet.address.substring(0, 6)}...${connectedWallet.address.substring(connectedWallet.address.length - 4)}`,
+        });
+      } catch (error) {
+        console.error("Failed to register wallet:", error);
+        toast({
+          title: "Registration Note",
+          description: "Connected to wallet but couldn't register with server.",
+        });
+      }
     } catch (error) {
-      setIsConnecting(false);
       console.error("Failed to connect wallet:", error);
       toast({
         title: "Connection Failed",
         description: "Failed to connect to wallet. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsConnecting(false);
     }
   };
 

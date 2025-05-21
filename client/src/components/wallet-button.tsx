@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import suiWallet from "@/lib/sui";
+import { suiWallet } from "@/lib/sui";
 
 interface WalletButtonProps {
   className?: string;
