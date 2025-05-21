@@ -130,7 +130,28 @@ class SuiWalletProvider {
     // For our demo, we'll simulate a successful transaction
     const txHash = `0x${Math.random().toString(16).substring(2, 66)}`;
     
+    // Update the wallet balance based on transaction amount
+    // In a real app, this would come from blockchain events
+    if (params.amount && typeof params.amount === 'number') {
+      this.wallet.balance -= params.amount;
+      
+      // Ensure balance doesn't go below 0
+      if (this.wallet.balance < 0) {
+        this.wallet.balance = 0;
+      }
+    }
+    
     return txHash;
+  }
+  
+  public async addFunds(amount: number): Promise<void> {
+    if (!this.wallet || !this.wallet.connected) {
+      throw new Error('Wallet not connected');
+    }
+    
+    // In a real app, this would be a deposit transaction
+    // For our demo, we'll simply update the balance
+    this.wallet.balance += amount;
   }
 }
 
