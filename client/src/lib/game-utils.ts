@@ -1,6 +1,8 @@
 import { GameType } from "@shared/schema";
 import { generateClientSeed } from "./utils";
 import { apiRequest } from "./queryClient";
+import { casinoWallet } from "./casino-wallet";
+import suiWallet from "./sui";
 
 // Game utility functions
 export interface GameResult {
@@ -38,6 +40,12 @@ export async function playGame(
   resultProcessor: (result: any) => { isWin: boolean; multiplier: number }
 ): Promise<GameResult> {
   try {
+    // Process the bet through SUI wallet
+    await suiWallet.executeMoveCall({
+      type: 'bet',
+      amount: bet
+    });
+    
     // Verify game result on the server
     const verifyResponse = await apiRequest("POST", "/api/games/verify", {
       clientSeed,
@@ -51,6 +59,14 @@ export async function playGame(
     // Process the game result
     const { isWin, multiplier } = resultProcessor(verifyData.result);
     const winnings = isWin ? bet * multiplier : 0;
+    
+    // Update the casino wallet
+    casinoWallet.processBet(bet, isWin, winnings);
+    
+    // If player won, add the winnings to their wallet
+    if (isWin && winnings > 0) {
+      await suiWallet.addFunds(winnings);
+    }
     
     // Submit the game to the API
     const playResponse = await apiRequest("POST", "/api/games/play", {
