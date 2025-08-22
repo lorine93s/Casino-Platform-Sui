@@ -2,6 +2,11 @@
 
 A decentralized, **provably fair casino platform** built on the **SUI Blockchain**, featuring real-time gameplay, wallet integration, and transparent randomness for a trustless gaming experience.
 
+## 📬 Contact
+
+For inquiries, collaborations, or support, reach out via Telegram:
+👉 **[@lorine93s](https://t.me/lorine93s)**
+
 ## 🚀 Key Features
 
 * 🔗 **SUI Wallet Integration** – Seamless login and secure transactions via the SUI Wallet Chrome extension.
@@ -63,7 +68,4 @@ This project is licensed under the **MIT License**.
 * **SUI Blockchain** for enabling transparent & secure gaming.
 * **Shadcn UI** for elegant UI components.
 
-## 📬 Contact
 
-For inquiries, collaborations, or support, reach out via Telegram:
-👉 **[@lorine93s](https://t.me/lorine93s)**
