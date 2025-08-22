@@ -1,65 +1,69 @@
 # SUI Blockchain Casino
 
-A SUI blockchain-based casino platform with provably fair games and wallet integration.
+A decentralized, **provably fair casino platform** built on the **SUI Blockchain**, featuring real-time gameplay, wallet integration, and transparent randomness for a trustless gaming experience.
 
-## Features
+## 🚀 Key Features
 
-- Connect with SUI Wallet Chrome extension
-- Play multiple provably fair casino games (Dice, Slots, Coinflip, Crash)
-- Real-time statistics and leaderboards
-- Admin dashboard for monitoring casino performance
-- Provably fair gaming system
+* 🔗 **SUI Wallet Integration** – Seamless login and secure transactions via the SUI Wallet Chrome extension.
+* 🎲 **Multiple Casino Games** – Play Dice, Slots, Coinflip, Crash, and more.
+* 📊 **Real-Time Stats & Leaderboards** – Track player performance and competition rankings live.
+* 🛠 **Admin Dashboard** – Manage casino operations, user activity, and performance metrics.
+* ✅ **Provably Fair Gaming** – All results are verifiable on-chain for transparency and fairness.
 
-## Technologies Used
+## 🛠️ Tech Stack
 
-- React and TypeScript for frontend
-- Express for backend API
-- SUI Blockchain integration
-- Tailwind CSS for styling
-- Shadcn UI components
+* **Frontend:** React, TypeScript, TailwindCSS, Shadcn UI
+* **Backend:** Express.js (REST API)
+* **Blockchain:** SUI integration for gaming logic & transactions
+* **Other:** Shared TypeScript interfaces and schemas
 
-## Getting Started
+## 📦 Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ and npm
-- SUI Wallet Chrome extension (for wallet connectivity)
+* Node.js **18+**
+* npm or yarn
+* **SUI Wallet Chrome Extension** (required for wallet connectivity)
 
 ### Installation
 
-1. Clone this repository:
-   ```
-   git clone https://github.com/yourusername/sui-blockchain-casino.git
-   cd sui-blockchain-casino
-   ```
+```bash
+# Clone repository
+git clone https://github.com/yourusername/sui-blockchain-casino.git
+cd sui-blockchain-casino
 
-2. Install dependencies:
-   ```
-   npm install
-   ```
+# Install dependencies
+npm install
 
-3. Start the development server:
-   ```
-   npm run dev
-   ```
+# Start development server
+npm run dev
+```
 
-4. Open your browser and navigate to `http://localhost:5000`
+Now open your browser at: **[http://localhost:5000](http://localhost:5000)** 🎉
 
-## Project Structure
+## 📂 Project Structure
 
-- `/client` - Frontend React application
-- `/server` - Express backend API
-- `/shared` - Shared TypeScript interfaces and schemas
+```
+/client   → React frontend  
+/server   → Express backend API  
+/shared   → Shared TypeScript types & schemas  
+```
 
-## Deployment
+## 🚀 Deployment
 
-This project is set up for deployment on Vercel. Simply connect your GitHub repository to Vercel for automatic deployments.
+* Configured for **Vercel** deployment.
+* Simply connect your repository to Vercel for **automatic builds & deployments**.
 
-## License
+## 📜 License
 
-MIT License
+This project is licensed under the **MIT License**.
 
-## Acknowledgments
+## 🙌 Acknowledgments
 
-- SUI blockchain for providing the foundation for provably fair gaming
-- Shadcn UI for the beautiful component library
+* **SUI Blockchain** for enabling transparent & secure gaming.
+* **Shadcn UI** for elegant UI components.
+
+## 📬 Contact
+
+For inquiries, collaborations, or support, reach out via Telegram:
+👉 **[@lorine93s](https://t.me/lorine93s)**
